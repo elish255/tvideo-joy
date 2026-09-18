@@ -11,7 +11,7 @@ import {
   VolumeX,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { BUY_URL, formatDuration, getVideo, REGISTER_URL, videos } from "@/lib/tvideo-data";
@@ -186,16 +186,17 @@ function VideoPage() {
             </Button>
           ) : null}
           {needsPlay ? (
-            <button
+            <Button
               type="button"
+              variant="player"
               onClick={playManually}
-              className="absolute inset-0 z-10 grid place-items-center bg-playing-overlay/60"
+              className="absolute inset-0 z-10 h-auto w-auto rounded-none"
               aria-label="Cheza video"
             >
               <span className="grid size-20 place-items-center rounded-full bg-accent text-accent-foreground shadow-2xl transition hover:scale-105">
                 <Play className="size-10 fill-current" aria-hidden="true" />
               </span>
-            </button>
+            </Button>
           ) : null}
         </div>
 
@@ -249,7 +250,7 @@ function VideoPage() {
   );
 }
 
-function InfoLine({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+function InfoLine({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
     <div className="grid grid-cols-[2.25rem_1fr] gap-4 leading-relaxed text-card-foreground">
       <div className="pt-0.5">{icon}</div>
