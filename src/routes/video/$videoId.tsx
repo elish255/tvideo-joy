@@ -14,7 +14,7 @@ import {
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
-import { BUY_URL, formatDuration, getVideo, REGISTER_URL, videos } from "@/lib/tvideo-data";
+import { BUY_URL, formatDuration, getVideo, videos } from "@/lib/tvideo-data";
 import { creditVideoReward, formatMoney } from "@/lib/tvideo-wallet";
 
 export const Route = createFileRoute("/video/$videoId")({
@@ -52,12 +52,14 @@ function VideoPage() {
   const [mutedAutoPlay, setMutedAutoPlay] = useState(false);
   const [buyOpen, setBuyOpen] = useState(false);
   const [completeMessage, setCompleteMessage] = useState("");
+  const [rewardOpen, setRewardOpen] = useState(false);
 
   useEffect(() => {
     setRemaining(video.duration);
     bestTimeRef.current = 0;
     finishedRef.current = false;
     setCompleteMessage("");
+    setRewardOpen(false);
     setNeedsPlay(false);
     setMutedAutoPlay(false);
 
@@ -89,6 +91,7 @@ function VideoPage() {
     if (player) player.pause();
     setRemaining(0);
     const result = creditVideoReward(video.id, video.reward);
+    setRewardOpen(true);
     setCompleteMessage(
       result.credited
         ? `Umefanikiwa! Umeongezewa ${formatMoney(video.reward)} kwenye balance.`
@@ -239,13 +242,33 @@ function VideoPage() {
         </div>
 
         <Button asChild variant="accent" size="lg" className="mt-7 w-full font-display text-xl font-extrabold">
-          <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer">
-            Fungua account hapa
+          <a href="/register">
+            Jisajili / Fungua account
           </a>
         </Button>
       </div>
 
       <BuyDialog open={buyOpen} title={video.title} onClose={() => setBuyOpen(false)} />
+      {rewardOpen ? (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-modal-backdrop p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-md overflow-hidden rounded-xl bg-profit text-profit-foreground shadow-2xl">
+            <div className="p-6 text-center">
+              <CheckCircle2 className="mx-auto size-16" aria-hidden="true" />
+              <p className="mt-3 font-display text-3xl font-extrabold">Hongera!</p>
+              <p className="mt-1 text-base font-bold text-profit-muted">Umetazama hadi mwisho.</p>
+              <div className="my-5 border-y border-profit-muted/30 py-5">
+                <p className="text-sm font-bold uppercase tracking-wide text-profit-muted">Umelipwa</p>
+                <p className="mt-1 font-display text-4xl font-extrabold">{formatMoney(video.reward)}</p>
+              </div>
+              <div className="rounded-lg border border-profit-muted/30 bg-black/10 p-4 text-left text-sm font-semibold">
+                Fungua account sasa kuhifadhi malipo yako na kuendelea kutumia Tvideo.
+              </div>
+              <a href="/register" className="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-white px-5 py-3 font-display text-lg font-extrabold text-slate-900 shadow-lg">FUNGUA ACCOUNT SASA</a>
+              <button type="button" onClick={() => setRewardOpen(false)} className="mt-3 w-full py-2 text-sm font-bold text-profit-muted">Funga</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
