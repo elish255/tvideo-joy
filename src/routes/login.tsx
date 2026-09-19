@@ -1,0 +1,12 @@
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, LogIn } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { loginUser } from "@/lib/auth";
+
+export const Route = createFileRoute("/login")({ component: LoginPage });
+function LoginPage() {
+  const navigate = useNavigate(); const [username,setUsername]=useState(""); const [password,setPassword]=useState(""); const [error,setError]=useState(""); const [loading,setLoading]=useState(false);
+  const submit=async(e:FormEvent)=>{e.preventDefault();setError("");setLoading(true);try{const {user}=await loginUser({username,password});await navigate({to:user.active?"/":"/payment"});}catch(err){setError(err instanceof Error?err.message:"Login imeshindikana.");}finally{setLoading(false);}};
+  return <main className="min-h-screen bg-background px-4 py-8 text-foreground"><div className="mx-auto max-w-md"><Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-page-muted"><ArrowLeft className="size-4"/> Rudi</Link><div className="mt-5 rounded-xl bg-card p-6 text-card-foreground shadow-xl"><div className="text-center"><div className="mx-auto grid size-14 place-items-center rounded-full bg-accent"><LogIn/></div><h1 className="mt-4 font-display text-3xl font-extrabold">Log in</h1><p className="mt-2 text-sm font-semibold text-card-muted">Tumia Username na Password ulizojisajili nazo.</p></div><form onSubmit={submit} className="mt-6 space-y-4"><label className="block text-sm font-bold">Username<input required value={username} onChange={e=>setUsername(e.target.value)} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-primary"/></label><label className="block text-sm font-bold">Password<input required type="password" value={password} onChange={e=>setPassword(e.target.value)} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-primary"/></label>{error&&<p className="rounded-lg bg-destructive/10 p-3 text-sm font-bold text-destructive">{error}</p>}<Button type="submit" variant="accent" size="lg" className="w-full font-display font-extrabold" disabled={loading}>{loading?"Inaingia...":"LOG IN"}</Button></form><p className="mt-5 text-center text-sm font-semibold text-card-muted">Huna account? <Link to="/register" className="font-extrabold text-primary">Jisajili</Link></p></div></div></main>;
+}

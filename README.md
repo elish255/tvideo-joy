@@ -24,3 +24,14 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Tvideo account & admin flow
+
+- Registration saves users to `data/tvideo-db.json` (passwords are hashed).
+- Login creates a secure HttpOnly session cookie.
+- Activation fee is **TSh 16,000** via **LIPA NAMBA 251161660**, business **ASSERT BRIDGE**.
+- First `NIMELIPIA` click shows `FANYA MALIPO KISHA JARIBU TENA`; second click asks for the payer phone and sends a verification request to admin.
+- Admin can approve/reject payment requests and activate/deactivate users at `/admin`.
+- Set `TVIDEO_ADMIN_USERNAME` and `TVIDEO_ADMIN_PASSWORD` from `.env.example` before running the app.
+
+> The included file database is suitable for a Node server with persistent disk. For serverless production hosting, migrate the same tables/API to PostgreSQL/Supabase before launch.

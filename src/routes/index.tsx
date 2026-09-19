@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formatDuration, REGISTER_URL, videos } from "@/lib/tvideo-data";
+import { formatDuration, videos } from "@/lib/tvideo-data";
 import { emptyWallet, formatMoney, readWallet, requestWithdrawal, WALLET_UPDATE_EVENT } from "@/lib/tvideo-wallet";
 
 export const Route = createFileRoute("/")({
@@ -91,7 +91,7 @@ function Index() {
               className="text-header-muted hover:bg-header-hover hover:text-foreground"
               aria-label="Profile"
             >
-              <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer">
+              <a href="/login">
                 <CircleUserRound className="size-9" aria-hidden="true" />
               </a>
             </Button>
@@ -152,8 +152,8 @@ function Index() {
               Kila video unayomaliza ni pesa mkononi. Fungua account yako sasa ili malipo yako yasipotee.
             </p>
             <Button asChild variant="accent" className="mt-3 w-full font-display text-base font-extrabold uppercase">
-              <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer">
-                Fungua account sasa
+              <a href="/register">
+                Jisajili sasa
               </a>
             </Button>
           </div>
