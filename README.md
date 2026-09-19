@@ -1,37 +1,49 @@
-# Tvideo Site Fix
+# Tvideo Site Fix — Supabase + Vercel
 
-Nitengenezee hii site yangu https://tvideo.site/ usibadilishe chochote button zote ziwe zinafanya kazi , video ziwe Zina play kama picha inavoonesha
+Tvideo flow iliyowekwa kwenye project hii:
 
-This project was built with [Lovable](https://lovable.dev).
+- Video ikimalizika, user anaona reward popup.
+- Jisajili/Fungua Account inaenda kwenye registration flow.
+- Registration ina-save user kwenye **Supabase PostgreSQL**.
+- Password inahifadhiwa ikiwa hashed; haijahifadhiwi plain text.
+- Login inatumia Username + Password.
+- User mpya anaelekezwa kwenye Activation Payment page.
+- Activation fee: **TSh 16,000**.
+- **LIPA NAMBA: 251161660**.
+- **Jina la Biashara: ASSERT BRIDGE**.
+- `NIMELIPIA` mara ya kwanza: **FANYA MALIPO KISHA JARIBU TENA**.
+- Mara ya pili user anaweka namba ya simu aliyolipia na kutuma payment verification request.
+- Admin anaona payment requests, anaweza **Approve/Reject**, na approval ina-activate user.
+- Admin anaweza pia **Activate/Deactivate** accounts moja kwa moja.
+- Sessions na payment requests pia zinahifadhiwa Supabase, hivyo data haipotei kwenye Vercel serverless deployments.
 
-**Live app**: https://tvideo-joy.lovable.app
+## Supabase setup
 
-## Build with Lovable
+1. Fungua Supabase project yako.
+2. Nenda **SQL Editor**.
+3. Run file `supabase-schema.sql` yote.
+4. Nenda **Project Settings → API** na chukua:
+   - Project URL
+   - `service_role` key
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/703e772c-6b90-4190-a7d8-7e8735218fb4).
+## Vercel Environment Variables
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Weka hizi kwenye Vercel project → Settings → Environment Variables:
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+```text
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
+TVIDEO_ADMIN_USERNAME=your_admin_username
+TVIDEO_ADMIN_PASSWORD=your_strong_admin_password
 ```
 
-## Tvideo account & admin flow
+**Muhimu:** usiweke `SUPABASE_SERVICE_ROLE_KEY` ikiwa na prefix `VITE_`, na usiiweke kwenye frontend code. Hii key inatumika server-side tu.
 
-- Registration saves users to `data/tvideo-db.json` (passwords are hashed).
-- Login creates a secure HttpOnly session cookie.
-- Activation fee is **TSh 16,000** via **LIPA NAMBA 251161660**, business **ASSERT BRIDGE**.
-- First `NIMELIPIA` click shows `FANYA MALIPO KISHA JARIBU TENA`; second click asks for the payer phone and sends a verification request to admin.
-- Admin can approve/reject payment requests and activate/deactivate users at `/admin`.
-- Set `TVIDEO_ADMIN_USERNAME` and `TVIDEO_ADMIN_PASSWORD` from `.env.example` before running the app.
+Baada ya kuweka variables, fanya **Redeploy** kwenye Vercel.
 
-> The included file database is suitable for a Node server with persistent disk. For serverless production hosting, migrate the same tables/API to PostgreSQL/Supabase before launch.
+## Local development
+
+```sh
+npm install
+npm run dev
+```
